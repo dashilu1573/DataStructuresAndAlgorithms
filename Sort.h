@@ -1,5 +1,6 @@
 //
 // Created by 芦yafei  on 18/7/17.
+// 参考《大话数据结构》
 //
 
 #ifndef SORT_SORT_H
@@ -46,66 +47,54 @@ void BubbleSort(int arr[], int n)
 }
 
 
-
-//int findPos(int arr[], int low, int high)
-//{
-//    int t = arr[low];
-//
-//}
-
-
-// 快速排序
-void QuickSort(int arr[],  int low, int high)
+// 数组分割（还有些bug）
+// 使枢轴之前的记录都小于它，之后的记录都大于它，并返回枢轴位置。
+int Partition(int arr[],  int low, int high)
 {
-    if(low > high) {
-        return;
-    }
+    // 第一条记录作为比较基准值
+    int pivotkey = arr[low];
 
-    // 比较基准值
-    int base = arr[low];
-
-    while(low < high) {
-        if(arr[low] <= base)
+    // 从两端向中间扫描
+    while(low < high)
+    {
+        if(arr[low] < pivotkey)
         {
+            swap(&arr[low], &arr[high]);
             low++;
             continue;
-        } else
+        }
+
+        if(arr[high] < pivotkey)
         {
-            if(arr[high] <= base)
-            {
-                int t = arr[high];
-                arr[high] = arr[low];
-                arr[low] = t;
-                PrintArray(arr, 10);
-                low++;
-                high--;
-            } else
-            {
-                while(arr[high] > base)
-                {
-                    high--;
-                    if(high == low)
-                    {
-                        break;
-                    }
-                }
-                int t = arr[high];
-                arr[high] = arr[low];
-                arr[low] = t;
-                PrintArray(arr, 10);
-                low++;
-                high--;
-            }
+            swap(&arr[low], &arr[high]);
+            high--;
+            continue;
         }
     }
 
-    QuickSort(arr, 1, low);
-    //QuickSort(arr, high, 10);
+    return low;
+}
+
+
+// 快速排序
+void QuickSort(int arr[], int low, int high)
+{
+    int pivot;
+
+    if(low < high) {
+        // 将arr一分为二，算出枢轴pivot
+        pivot = Partition(arr, low, high);
+        // 对左侧递归排序
+        QuickSort(arr, low, pivot - 1);
+        // 对右侧递归排序
+        QuickSort(arr, pivot + 1, high);
+    }
 }
 
 
 // arr是待调整的堆数组,i是待调整的数组元素的位置,n是数组的长度
-void heapAdjust(int arr[], int i, int n) {
+void heapAdjust(int arr[], int i, int n)
+{
     int child;
     int t = arr[i];
 

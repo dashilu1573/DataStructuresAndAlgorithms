@@ -33,8 +33,8 @@ int main() {
     // 数组操作
     PrintArray(array, 10);
     //BubbleSort(array, 10);
-    //QuickSort(array, 0, 9);
-    heapSort(array,10);
+    QuickSort(array, 0, 9);
+    //heapSort(array,10);
     PrintArray1(array, 10);
 
     // 字符串操作
